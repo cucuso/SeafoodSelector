@@ -4,29 +4,78 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnQueryTextListener {
 
+	TextView txt;
+	Fishes fishes = new Fishes();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+	
+		txt = new TextView(this);
+		txt.setPadding(10, 10, 10, 10);
+		txt.setText("WTF");
+		setContentView(txt);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		 // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		 // Associate searchable configuration with the SearchVie
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
                 .getActionView();
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
-        return super.onCreateOptionsMenu(menu);
+        searchView.setOnQueryTextListener(this);
+        return true;
         
+	}
+	  @Override
+	    public boolean onPrepareOptionsMenu(Menu menu) {
+	        return super.onPrepareOptionsMenu(menu);
+	    }
+	  
+	
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		newText = newText.isEmpty() ? "" : "Query so far: " + newText;
+        txt.setText(newText);
+        txt.setTextColor(Color.GREEN);
+        
+      
+        
+        return true;
+		
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		  txt.setText("Searching for: " + query + "...");
+	      txt.setTextColor(Color.RED);
+	      
+	        DB db = new DB(this);
+	        SQLiteDatabase qdb = db.getReadableDatabase();	        
+	        Cursor recordset2 = qdb.rawQuery("SELECT * FROM fishes", null);
+	        
+	       	      	        
+
+	        if(recordset2.moveToFirst()) {
+	            String s = recordset2.getString(1); 
+	            txt.setText(s);
+	        }
+	        
+	        return true;
 	}
 
 }
