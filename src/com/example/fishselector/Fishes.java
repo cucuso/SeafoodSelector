@@ -17,7 +17,6 @@ public class Fishes {
 		    put("STRIPED MULLET","test"); put("TILAPIA (ECUADOR)","test"); put("TILAPIA(U.S.)","test"); put("U.S. HADDOCK (HOOK AND LINE)","test"); put("WEATHERVANE SCALLOP","test"); put("WILD ALASKAN SALMON","test");
 		    put("WRECKFISH","test"); put("YELLOW PERCH (LAKE ERIE)","test"); put("YELLOWFIN (U.S. ATLANTIC TROLL/POLE)","test"); put("U.S. HADDOCK (HOOK AND LINE)","test"); put("WEATHERVANE SCALLOP","test"); put("WILD ALASKAN SALMON","test");}};
 
-	
-		    
+			    
 		 
 }
