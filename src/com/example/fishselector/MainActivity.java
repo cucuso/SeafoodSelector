@@ -1,5 +1,7 @@
 package com.example.fishselector;
 
+import java.io.IOException;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.SearchManager;
@@ -7,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -19,10 +22,13 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	TextView txt;
 	Fishes fishes = new Fishes();
 	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	
+	
+	 
 		txt = new TextView(this);
 		txt.setPadding(10, 10, 10, 10);
 		txt.setText("WTF");
@@ -60,12 +66,23 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	}
 
 	@Override
+	//if database isnt recognized reinstall app
 	public boolean onQueryTextSubmit(String query) {
 		  txt.setText("Searching for: " + query + "...");
 	      txt.setTextColor(Color.RED);
 	      
 	        DB db = new DB(this);
-	        SQLiteDatabase qdb = db.getReadableDatabase();	        
+	        try {
+				db.createDataBase();
+				Log.d(STORAGE_SERVICE,"this passed");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        db.openDataBase();
+	        Log.d(STORAGE_SERVICE,"this passed");
+	        SQLiteDatabase qdb = db.getReadableDatabase();	 
+	        Log.d(STORAGE_SERVICE,"this passed");
 	        Cursor recordset2 = qdb.rawQuery("SELECT * FROM fishes", null);
 	        
 	       	      	        
